@@ -1,0 +1,6 @@
+{
+  "name": "ContinuityOS - نظام تشغيل استمرارية الأعمال",
+  "description": "نظام تشغيل مؤسسي متكامل لإدارة استمرارية الأعمال (ISO 22301 & NIST)، توثيق العمليات SOPs، مصفوفة البدلاء والصلاحيات، أتمتة التصعيد والتعافي من الطوارئ.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
