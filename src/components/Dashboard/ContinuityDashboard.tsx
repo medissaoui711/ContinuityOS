@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import {
   EmployeeRole,
-  SkillMatrixItem,
   StandardOperatingProcedure,
+  AdminOffice,
+  Branch,
+  EmployeeStaff,
+  AuditLogEntry,
   WorkflowRequest,
-  SystemDRMetrics,
-  ContinuityDrill,
 } from '../../types';
 import {
   ShieldAlert,
@@ -25,26 +26,32 @@ import {
   UserCheck,
 } from 'lucide-react';
 
-interface ContinuityDashboardProps {
+export interface ContinuityDashboardProps {
   roles: EmployeeRole[];
-  skillMatrix: SkillMatrixItem[];
   sops: StandardOperatingProcedure[];
+  offices: AdminOffice[];
+  branches: Branch[];
+  employees: EmployeeStaff[];
+  auditLogs: AuditLogEntry[];
   workflows: WorkflowRequest[];
-  drMetrics: SystemDRMetrics[];
-  drills: ContinuityDrill[];
   score: number;
-  onNavigateTab: (tab: any) => void;
+  onNavigate: (tab: string) => void;
+  isEmergencyActive: boolean;
+  emergencyReason: string;
 }
 
 export const ContinuityDashboard: React.FC<ContinuityDashboardProps> = ({
   roles,
-  skillMatrix,
   sops,
+  offices,
+  branches,
+  employees,
+  auditLogs,
   workflows,
-  drMetrics,
-  drills,
   score,
-  onNavigateTab,
+  onNavigate,
+  isEmergencyActive,
+  emergencyReason,
 }) => {
   const [aiAnalysis, setAiAnalysis] = useState<string | null>(null);
   const [loadingAi, setLoadingAi] = useState(false);
@@ -56,9 +63,9 @@ export const ContinuityDashboard: React.FC<ContinuityDashboardProps> = ({
   ).length;
 
   const criticalSops = sops.filter((s) => s.isCritical).length;
-  const spofs = skillMatrix.filter((item) => item.coverageHealth === 'CRITICAL');
-  const activeAbsences = workflows.filter(
-    (w) => w.type === 'LEAVE_REQUEST' && w.status === 'APPROVED'
+  const spofs = roles.filter((r) => !r.substituteRoleId).length;
+  const activeAbsences = employees.filter(
+    (e) => e.attendanceStatus === 'ABSENT' || e.attendanceStatus === 'ON_LEAVE'
   );
   const pendingApprovals = workflows.filter((w) => w.status === 'PENDING');
 
@@ -165,7 +172,7 @@ export const ContinuityDashboard: React.FC<ContinuityDashboardProps> = ({
 
         {/* Card 2: Fully Trained Substitutes */}
         <div
-          onClick={() => onNavigateTab('roles')}
+          onClick={() => onNavigate('roles')}
           className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs hover:border-slate-300 transition-all cursor-pointer group"
         >
           <div className="flex items-center justify-between">
@@ -188,7 +195,7 @@ export const ContinuityDashboard: React.FC<ContinuityDashboardProps> = ({
 
         {/* Card 3: Single Points of Failure */}
         <div
-          onClick={() => onNavigateTab('roles')}
+          onClick={() => onNavigate('roles')}
           className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs hover:border-slate-300 transition-all cursor-pointer group"
         >
           <div className="flex items-center justify-between">
@@ -198,17 +205,17 @@ export const ContinuityDashboard: React.FC<ContinuityDashboardProps> = ({
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-3xl font-extrabold text-rose-600">{spofs.length}</span>
-            <span className="text-xs text-rose-700 font-bold">عمليات تحتاج بديل ثانٍ</span>
+            <span className="text-3xl font-extrabold text-rose-600">{spofs}</span>
+            <span className="text-xs text-rose-700 font-bold">أدوار بدون بديل مدرب</span>
           </div>
           <p className="mt-2 text-xs text-slate-500 truncate">
-            {spofs.length > 0 ? spofs[0].processName : 'جميع العمليات مغطاة'}
+            {spofs > 0 ? 'تتطلب تعيين بدلاء لتجنب توقف العمل' : 'جميع العمليات مغطاة'}
           </p>
         </div>
 
         {/* Card 4: Documented Critical SOPs */}
         <div
-          onClick={() => onNavigateTab('sops')}
+          onClick={() => onNavigate('sops')}
           className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs hover:border-slate-300 transition-all cursor-pointer group"
         >
           <div className="flex items-center justify-between">
@@ -231,7 +238,7 @@ export const ContinuityDashboard: React.FC<ContinuityDashboardProps> = ({
       {/* Quick Office & Attendance Status Banner */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div
-          onClick={() => onNavigateTab('offices')}
+          onClick={() => onNavigate('offices')}
           className="bg-gradient-to-r from-slate-900 to-blue-950 text-white rounded-2xl p-4 shadow-xs hover:border-blue-500 border border-slate-800 transition-all cursor-pointer flex items-center justify-between group"
         >
           <div className="flex items-center gap-3">
@@ -249,7 +256,7 @@ export const ContinuityDashboard: React.FC<ContinuityDashboardProps> = ({
         </div>
 
         <div
-          onClick={() => onNavigateTab('attendance')}
+          onClick={() => onNavigate('attendance')}
           className="bg-gradient-to-r from-slate-900 to-emerald-950 text-white rounded-2xl p-4 shadow-xs hover:border-emerald-500 border border-slate-800 transition-all cursor-pointer flex items-center justify-between group"
         >
           <div className="flex items-center gap-3">
@@ -328,7 +335,7 @@ export const ContinuityDashboard: React.FC<ContinuityDashboardProps> = ({
                 <h3 className="text-sm font-bold text-slate-900">الموافقات المعلقة والتصعيد التلقائي</h3>
               </div>
               <button
-                onClick={() => onNavigateTab('workflows')}
+                onClick={() => onNavigate('workflows')}
                 className="text-xs text-blue-600 hover:text-blue-700 font-semibold flex items-center gap-1 cursor-pointer"
               >
                 <span>إدارة المعاملات</span>

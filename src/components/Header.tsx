@@ -8,6 +8,7 @@ import {
   CheckCircle2,
   AlertTriangle,
   Lock,
+  Menu,
 } from 'lucide-react';
 
 interface HeaderProps {
@@ -18,6 +19,7 @@ interface HeaderProps {
   onTriggerEmergencyModal: () => void;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
+  onOpenMobileMenu?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -28,16 +30,24 @@ export const Header: React.FC<HeaderProps> = ({
   onTriggerEmergencyModal,
   searchQuery,
   setSearchQuery,
+  onOpenMobileMenu,
 }) => {
   return (
     <header className="bg-white border-b border-slate-200 text-slate-900 sticky top-0 z-40 shadow-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between gap-4">
-        {/* Brand & System Title */}
+        {/* Brand & System Title & Mobile Menu Button */}
         <div className="flex items-center gap-3">
+          <button
+            onClick={onOpenMobileMenu}
+            className="md:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
+            aria-label="فتح القائمة"
+          >
+            <Menu className="w-6 h-6" />
+          </button>
           <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-xs">
             <Building2 className="w-6 h-6 text-white" />
           </div>
-          <div>
+          <div className="hidden sm:block">
             <div className="flex items-center gap-2">
               <h1 className="text-lg font-bold text-slate-900 tracking-tight">ContinuityOS</h1>
               <span className="bg-blue-50 text-blue-700 border border-blue-200 text-[11px] px-2.5 py-0.5 rounded-full font-semibold">

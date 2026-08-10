@@ -1,0 +1,67 @@
+# tutti.toml - Persistent AI Agent & Architecture Guidelines
+# BCM Command Center & Executive Operations Hub
+
+[project]
+name = "BCM Command Center & Executive Operations Hub"
+version = "1.0.0"
+description = "Enterprise Business Continuity Management (ISO 22301), Administrative Offices & Live Attendance Command System"
+primary_language = "Arabic (RTL)"
+secondary_language = "English (LTR)"
+compliance = "ISO 22301 Business Continuity Management"
+
+[tech_stack]
+framework = "React 18.3"
+build_tool = "Vite 5.4"
+language = "TypeScript 5.5"
+styling = "Tailwind CSS 3.4"
+icons = "Lucide React"
+state_management = "React Hooks + LocalStorage Synchronized Persistence"
+type_checker = "tsc --noEmit"
+
+[architecture]
+entry_point = "src/main.tsx"
+app_root = "src/App.tsx"
+types_file = "src/types/index.ts"
+initial_data = "src/data/initialData.ts"
+components_dir = "src/components/"
+
+[components_map]
+dashboard = "src/components/Dashboard/ContinuityDashboard.tsx"
+offices = "src/components/Offices/OfficeManagement.tsx"
+attendance = "src/components/Attendance/AttendanceManagement.tsx"
+roles = "src/components/Roles/RoleMatrix.tsx"
+sops = "src/components/SOP/SOPLibrary.tsx"
+workflows = "src/components/Workflows/DelegationWorkflows.tsx"
+vault = "src/components/Vault/SecureVault.tsx"
+recovery = "src/components/Recovery/DisasterRecoveryPanel.tsx"
+audit = "src/components/Audit/AuditLogView.tsx"
+header = "src/components/Header.tsx"
+sidebar = "src/components/Sidebar.tsx"
+
+[design_system]
+rtl_support = true
+direction = "rtl"
+font_family = "System Default / Tajawal / Cairo"
+primary_color = "blue-600"
+secondary_color = "slate-900"
+presence_green = "emerald-500 (Present 🟢)"
+presence_red = "rose-500 (Absent 🔴)"
+presence_blue = "blue-500 (Remote 🔵)"
+presence_amber = "amber-500 (On Leave 🟠)"
+
+[layout_rules]
+desktop_navigation = "Sidebar on desktop (hidden on mobile, visible on md:flex)"
+mobile_navigation = "Responsive top header & flexible navigation elements with min 44px touch targets"
+card_border_radius = "rounded-2xl"
+modal_overlay = "bg-slate-950/60 backdrop-blur-xs z-50"
+
+[ai_directives]
+strict_rules = [
+  "Build strictly what the user requests with 100% functional completeness.",
+  "Preserve bilingual capabilities with primary focus on high-quality Arabic enterprise terminology.",
+  "Maintain ISO 22301 compliance for BCM, substitute delegation, and continuity scoring.",
+  "Always preserve live attendance status indicators (green dot for Present, red dot for Absent).",
+  "Ensure local storage synchronization remains intact for all corporate entities (branches, offices, staff, roles, SOPs, vaults).",
+  "Follow AGENTS.md workflow and request explicit user confirmation before destructive structural changes.",
+  "Verify syntax and build integrity via compile_applet and lint_applet after significant edits."
+]
